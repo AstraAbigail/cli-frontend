@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useAuth } from "../context/AuthContext"
 
 const UpdatePedido = ({ pedido, onClose, onUpdate }) => {
   const [loader, setLoader] = useState(false)
@@ -18,6 +19,8 @@ const UpdatePedido = ({ pedido, onClose, onUpdate }) => {
     })
   }
 
+  const { token} = useAuth()
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -25,16 +28,25 @@ const UpdatePedido = ({ pedido, onClose, onUpdate }) => {
       ...formData,
       dniCliente: Number(formData.dniCliente)
     }
-    
+  
+
     try {
       setLoader(true)
-      const response = await fetch(`https://cli-l4ad.onrender.com/pedidos/${pedido._id}`, {
+      const response = await fetch(`http://localhost:3000/pedidos/${pedido._id}`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(dataToUpdate)
       })
+      // const response = await fetch(`https://cli-l4ad.onrender.com/pedidos/${pedido._id}`, {
+      //   method: "PATCH",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify(dataToUpdate)
+      // })
       onUpdate()
       onClose()
     } catch (error) {

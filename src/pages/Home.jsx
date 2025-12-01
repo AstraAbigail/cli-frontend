@@ -8,7 +8,7 @@ import { TECNICOS } from "../constants/tecnicos"
 const Home = () => {
   const [pedidos, setPedidos] = useState([])
   // const [user, setUser] = useState(true)
-  const {user} = useAuth()  //estado global
+  const {user, token} = useAuth()  //estado global
   const [selectedPedido, setSelectedPedido] = useState(null)
   const [filters, setFilters] = useState({
     cliente: "",
@@ -18,13 +18,17 @@ const Home = () => {
     fechaHasta: "",
     estado:""
   })
+
+  
   
   const fetchingPedidos = async (query="") => {
     try {
-      const response = await fetch(`https://cli-l4ad.onrender.com/pedidos?${query}`, {
+      // const response = await fetch(`https://cli-l4ad.onrender.com/pedidos?${query}`, {
+      //   method: "GET"
+      // })
+      const response = await fetch(`http://localhost:3000/pedidos?${query}`, {
         method: "GET"
       })
-      
       const dataPedidos = await response.json()
       setPedidos(dataPedidos.data.reverse())
     } catch (e) {
@@ -43,10 +47,22 @@ const Home = () => {
     }
     
     try {
-      const response = await fetch(`https://cli-l4ad.onrender.com/pedidos/${idPedido}`, {
-        method: "DELETE"
+      const response = await fetch(`http://localhost:3000/pedidos/${idPedido}`, {
+        method: "DELETE",
+        headers: {
+          Authorization:`Bearer ${token}`
+        }
       })
+      // const response = await fetch(`https://cli-l4ad.onrender.com/pedidos/${idPedido}`, {
+      //   method: "DELETE"
+      // })
       const dataResponse = await response.json()
+
+      if (dataResponse.error) { 
+        return alert(dataResponse.error)
+      }
+
+
       //filtrado local - si estuvieramos en un entorno global habria que llamar a nuevamente a la bd.
       setPedidos(pedidos.filter((p) => p._id !== idPedido))
       alert(`${dataResponse.data.cliente} borrado con éxito.`)
@@ -94,7 +110,7 @@ const Home = () => {
 
       <section className="page-section">
         <p>
-          Bienvenido a nuestra tienda. Aquí encontrarás una amplia variedad de productos diseñados para satisfacer
+          Bienvenido { user && user.email} a nuestra tienda. Aquí encontrarás una amplia variedad de productos diseñados para satisfacer
           tus necesidades. Nuestro compromiso es ofrecer calidad y confianza.
         </p>
       </section>
@@ -117,7 +133,7 @@ const Home = () => {
             name="tecnicoAsignado"
             value={filters.tecnicoAsignado }
             onChange={handleChange}>
-            <option selected>Técnicos Disponibles</option>
+            <option defaultValue>Técnicos Disponibles</option>
             { 
               TECNICOS.map((tecnicoAsignado) => <option key={tecnicoAsignado.id} value={tecnicoAsignado.value}>{ tecnicoAsignado.content}</option>)
             }

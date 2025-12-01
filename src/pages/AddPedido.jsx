@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Layout from "../components/Layout"
-import { data } from "react-router-dom"
+import { data, Navigate, useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
 const AddPedido = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,9 @@ const AddPedido = () => {
     estado:""
   })
 
+  const navigate = useNavigate()
+  const { token } = useAuth()
+  
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -21,13 +25,24 @@ const AddPedido = () => {
     }
     console.log("dataToSend:",dataToSend)
     try {
-      const response = await fetch(`https://cli-l4ad.onrender.com/pedidos`, {
+
+      const response = await fetch(`http://localhost:3000/pedidos`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization":`Bearer ${token}`
         },
         body: JSON.stringify(dataToSend)
       })
+
+      // const response = await fetch(`https://cli-l4ad.onrender.com/pedidos`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization:`Bearer ${token}`
+      //   },
+      //   body: JSON.stringify(dataToSend)
+      // })
       
       if (!response.ok) {
         alert("❌ Error al cargar el pedido")
@@ -43,6 +58,7 @@ const AddPedido = () => {
         fechaProgramada: "",
         estado:""
       })
+      navigate("/")
     } catch (error) {
 
     }
