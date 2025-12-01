@@ -32,7 +32,15 @@ const UpdatePedido = ({ pedido, onClose, onUpdate }) => {
 
     try {
       setLoader(true)
-      const response = await fetch(`http://localhost:3000/pedidos/${pedido._id}`, {
+      // const response = await fetch(`http://localhost:3000/pedidos/${pedido._id}`, {
+      //   method: "PATCH",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${token}`
+      //   },
+      //   body: JSON.stringify(dataToUpdate)
+      // })
+      const response = await fetch(`https://cli-l4ad.onrender.com/pedidos/${pedido._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -40,13 +48,6 @@ const UpdatePedido = ({ pedido, onClose, onUpdate }) => {
         },
         body: JSON.stringify(dataToUpdate)
       })
-      // const response = await fetch(`https://cli-l4ad.onrender.com/pedidos/${pedido._id}`, {
-      //   method: "PATCH",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify(dataToUpdate)
-      // })
       onUpdate()
       onClose()
     } catch (error) {

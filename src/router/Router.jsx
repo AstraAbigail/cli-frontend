@@ -5,7 +5,8 @@ import Register from "../pages/Register"
 import AboutUs from "../pages/AboutUs"
 import AddPedido from "../pages/AddPedido"
 import NotFound from "../pages/NotFound"
-import ProtectedRoute from "../components/ProtectedRoute";
+import ProtectedRoute from "../components/ProtectedRoute"
+import Contact from "../pages/Contact"
 
 const RouterApp = () => {
   return (
@@ -22,6 +23,7 @@ const RouterApp = () => {
             </ProtectedRoute>
             }
         />
+         <Route path="/contacto" element={<Contact />} />
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </BrowserRouter>

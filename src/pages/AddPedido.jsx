@@ -26,23 +26,23 @@ const AddPedido = () => {
     console.log("dataToSend:",dataToSend)
     try {
 
-      const response = await fetch(`http://localhost:3000/pedidos`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization":`Bearer ${token}`
-        },
-        body: JSON.stringify(dataToSend)
-      })
-
-      // const response = await fetch(`https://cli-l4ad.onrender.com/pedidos`, {
+      // const response = await fetch(`http://localhost:3000/pedidos`, {
       //   method: "POST",
       //   headers: {
       //     "Content-Type": "application/json",
-      //     Authorization:`Bearer ${token}`
+      //     "Authorization":`Bearer ${token}`
       //   },
       //   body: JSON.stringify(dataToSend)
       // })
+
+      const response = await fetch(`https://cli-l4ad.onrender.com/pedidos`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:`Bearer ${token}`
+        },
+        body: JSON.stringify(dataToSend)
+      })
       
       if (!response.ok) {
         alert("❌ Error al cargar el pedido")
@@ -116,7 +116,7 @@ const AddPedido = () => {
             onChange={(e) => handleChange(e)}
             value={formData.tecnicoAsignado}
           />
-          <input
+          {/* <input
             type="text"
             placeholder="Fecha Programada"
             name="fechaProgramada"
@@ -124,7 +124,7 @@ const AddPedido = () => {
             maxLength={20}
             onChange={(e) => handleChange(e)}
             value={formData.fechaProgramada}
-          />
+          /> */}
           <input
             type="text"
             placeholder="Estado"
